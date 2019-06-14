@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.aop.mapper.UserMapper">
+
+    <resultMap id="resultMap" type="com.spring.aop.entry.User">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="occupation" column="occupation"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+    </resultMap>
+
+    <insert id="addUser" parameterType="com.spring.aop.entry.User">
+
+
+        <!-- NSERT INTO users (users.user_id,users.user_name,users.occupation,users.sex,users.age)
+        VALUES(#{userId},#{userName},#{occupation},#{sex},#{age}); -->
+
+
+       insert into users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            user_id,
+            <if test="userName != null">user_name,</if>
+            <if test="occupation != null">occupation,</if>
+            <if test="sex != null">sex,</if>
+            <if test="age != null">age,</if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{userId},
+            <if test="userName != null">#{userName},</if>
+            <if test="occupation != null">#{occupation},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="age != null">#{age},</if>
+        </trim>
+    </insert>
+    
+    <select id="fandOen" parameterType="string" resultMap="resultMap">
+    	SELECT * FROM users WHERE user_id = #{id}
+    </select>
+    
+      <select id="findUser" resultMap="resultMap">
+    	SELECT * FROM users
+    </select>
+
+</mapper>
